@@ -1,0 +1,55 @@
+
+
+
+
+
+
+
+
+
+
+Early computer games asked players to find their way through dangerous mazes and caves. The player wanders from cave to cave, finds treasures, encounters creatures of all kinds, fights, kisses, picks up energy, and eventually reaches paradise. This section lays out the basics of such a game, using our iterative approach to program design. 
+
+Our tour takes place at one of the scariest places of all: campus. A campus consists of buildings, some more dangerous than others. Each building has a name and is connected to a group of other buildings. 
+
+The player is always in a building. We refer to this building as the current location. To find out more about the location, the player can ask for a picture of the building and for the list of connections. The player can also move to one of the connected buildings by issuing a go command. 
+
+
+
+
+
+ Exercise 37.5.1.   Provide structure and data definitions for buildings. Include a picture field in the structure. 
+
+A campus is a list of buildings. Define a sample campus. See figure 109 for a small example.   Solution
+
+
+
+
+
+ Exercise 37.5.2.   Develop a program that permits a player to move through the sample campus of exercise 37.5.1. The program should support at least three services: 
+
+show-me, which produces the picture of the current location: see figure 110; 
+
+where-to-go, which produces the list of connected buildings;
+
+go, which changes the current location of the player. 
+
+If the player issues the command (go s) and s is not connected to the current location, the function must report an error. Develop other functions as necessary or as desired.   Solution
+
+
+
+Players of early maze games could also gather objects and trade objects at the various sites. Specifically, the player had a bag for carrying objects, and each site contained objects that the player could trade for things in the bag. 
+
+
+
+
+
+ Exercise 37.5.3.   Modify the tour program so that each building contains one object. Furthermore, the player should have a bag that contains (at most) one object. At each location, the player can pick up an object, if the bag is empty, or swap the object in the bag for the object in the building otherwise.
+
+Modify the program further so that the player can carry an arbitrary number of objects in the bag.  Solution
+
+
+
+
+
+The three exercises in this section illustrate how maze games work. From here it is easy to experiment with various flavors of the game. Taking a walk from one building to another may take some energy, and the player may have only a finite amount of energy. Creatures may fight or kiss the player, which consumes or replenishes the player's energy level. Use your imagination to extend the game and have friends take the tour.

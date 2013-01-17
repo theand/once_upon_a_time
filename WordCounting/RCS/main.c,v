@@ -1,0 +1,190 @@
+head	1.8;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.8
+date	2002.08.01.13.25.34;	author cs991033;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2002.08.01.11.30.23;	author cs991033;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2002.07.30.13.39.26;	author cs991033;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2002.07.26.12.23.23;	author cs991033;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2002.07.24.12.15.19;	author cs991033;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2002.07.24.08.49.12;	author cs991033;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2002.07.20.11.51.22;	author cs991033;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.07.20.09.57.39;	author cs991033;	state Exp;
+branches;
+next	;
+
+
+desc
+@main.c - master control
+@
+
+
+1.8
+log
+@print word list
+@
+text
+@/*------------------------------------------------ 
+ * main.c
+ * ------------------------------------------------*/ 
+
+#include "myutil.h"
+#include "wc.h"
+#ifdef _ARRAY_
+#include "array.h"
+#else
+#include "list.h"
+#endif
+
+
+int main(int argc, char **argv)
+{
+
+	char *line;
+	int isPrintList = true;//TODO
+
+	setProgName("Word Counting"); 
+	handleArgument(argc, argv);
+	setPrintMode(7);
+
+	initLineList();
+
+	printf("filename = %s\n", getFileName() );
+	while( hasNextLine() == true ){
+		line = getLine();
+		countWord( line );
+		countLine( line );
+		countChar( line );
+	}
+
+	printResult();
+	if( isPrintList )
+		printWordList();
+	return 0;
+}
+
+//////////////////////   End Of File  ///////////////////
+@
+
+
+1.7
+log
+@we can use array impl. or linked list impl.
+@
+text
+@d18 1
+a18 1
+	int isPrintList = false;//TODO
+@
+
+
+1.6
+log
+@add #include array.h
+@
+text
+@d7 1
+d9 3
+d18 1
+d35 2
+a36 1
+	printWordList();
+@
+
+
+1.5
+log
+@now we can print word occurrence
+@
+text
+@d7 1
+@
+
+
+1.4
+log
+@now we can get word,char,line.
+@
+text
+@d29 1
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d12 1
+d16 1
+a16 1
+	setPrintMode();
+a19 1
+	printResult();
+d21 6
+a26 2
+	while( hasNextLine() == true )
+		printf("%s\n", getLine() );
+d28 1
+@
+
+
+1.2
+log
+@small release - echo function.
+@
+text
+@d17 1
+a17 1
+	initLineList(getFileName() );
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 1
+d13 10
+a22 7
+	setProgName("Word Counting");
+
+
+	// 아규먼트를 검사하고 처리한다.
+	//handleArgument(argc, argv);
+
+
+@

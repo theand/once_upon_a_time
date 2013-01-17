@@ -1,0 +1,125 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.5
+date	2002.08.07.17.13.33;	author cs991033;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2002.07.30.13.39.33;	author cs991033;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2002.07.30.11.58.28;	author cs991033;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2002.07.26.08.48.07;	author cs991033;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.07.20.09.58.05;	author cs991033;	state Exp;
+branches;
+next	;
+
+
+desc
+@my utilities header file
+@
+
+
+1.5
+log
+@c++ compatible
+@
+text
+@
+#ifndef _MY_UTIL_
+#define _MY_UTIL_
+
+#include <assert.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+
+
+#define StrLess(strLeft, strRight)\
+    (strcmp(strLeft, strRight)<0) 
+#define StrGreater(strLeft, strRight)\
+	(strcmp(strLeft, strRight)>0) 
+#define StrEqual(strLeft, strRight)\
+	(strcmp(strLeft, strRight)==0) 
+#define assertEquals( left, right )\
+	( assert( (left) == (right) ) )
+#define assertStrEquals( left, right )\
+	( assertTrue( StrEqual( (left), (right) ) )  )
+#define assertTrue( statement )\
+	( assert( (statement) == true ) )
+#define assertFalse( statement )\
+	( assert( (statement) == false ) )
+
+FILE *efopen(char *name, char *mode);
+void closeFile(FILE *t);
+void *emalloc(size_t n);
+void eprintf(char *fmt, ...);
+char *estrdup(const char *aStr);
+void setProgName(const char *aStr);
+char *getProgName(void);
+
+
+#ifndef __cplusplus
+enum {true=1, false=0};
+#endif
+
+extern char *progName;
+#endif
+//////////////////////// End Of File /////////////////////////////
+@
+
+
+1.4
+log
+@add true/false
+@
+text
+@d37 1
+d39 2
+@
+
+
+1.3
+log
+@add : true / false
+@
+text
+@d21 2
+@
+
+
+1.2
+log
+@add StrLess, StrGreater, StrEqual
+@
+text
+@d19 6
+d35 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d12 8
+@

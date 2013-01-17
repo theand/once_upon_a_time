@@ -1,0 +1,165 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2002.08.01.13.26.07;	author cs991033;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2002.08.01.11.30.51;	author cs991033;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2002.07.30.13.39.56;	author cs991033;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.07.30.11.59.12;	author cs991033;	state Exp;
+branches;
+next	;
+
+
+desc
+@Word Repository implemented in array
+@
+
+
+1.4
+log
+@/
+@
+text
+@
+/*
+ * array.c
+ * */
+
+
+#include "myutil.h"
+#include "array.h"
+
+WordList _wordList[500];
+int _currentInsertIndex=0;
+
+void insertWord(const char *aWord)
+{
+	//TODO : free estrdup
+
+	assert(aWord!=NULL);
+
+	if( isInclude(aWord) ){
+		_wordList[getIndexOf(aWord)].count++;
+	}
+	else{
+		_wordList[_currentInsertIndex].word = estrdup(aWord);
+		_wordList[_currentInsertIndex].count = 1;
+		_currentInsertIndex++; 
+	}
+	//TODO free pointer.
+	
+}
+int isInclude(const char *aWord)
+{
+	int i;
+
+	for( i=0; i< _currentInsertIndex; i++)
+		if( StrEqual(aWord, _wordList[i].word) )
+			return true;
+
+	return false; 
+}
+
+int getIndexOf(const char *aWord)
+{
+	int i;
+
+	assert( isInclude(aWord) == true );
+
+	for( i=0; i< _currentInsertIndex; i++)
+		if( StrEqual(aWord, _wordList[i].word) )
+			break;
+	assertTrue( i != _currentInsertIndex );
+	return i;
+}
+
+WordList *getNodeAt(const char *aWord)
+{
+	int i;
+	for( i=0; i< _currentInsertIndex; i++)
+		if( StrEqual(aWord, _wordList[i].word) )
+			break; 
+	return (&_wordList[i]);
+}
+
+/*
+int getOccurrenceOf(const char *aWord)
+{
+	int i;
+	assertTrue( aWord != NULL);
+	i=getIndexOf(aWord);
+	return _wordList[i].count;
+}
+*/
+void printWordList(void)
+{
+	//TODO make flag
+	int i;
+	for(i=0;i< _currentInsertIndex; i++){
+		printf("%s\t%d\n", _wordList[i].word, _wordList[i].count );
+	}
+}
+
+
+/////////// End Of File /////////////////
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d15 1
+d50 1
+@
+
+
+1.2
+log
+@OK
+@
+text
+@d61 1
+d69 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d34 1
+a34 1
+		if( StrEqual(aWord, getWordAt(i)) )
+d47 1
+a47 1
+		if( StrEqual(aWord, getWordAt(i)) )
+d52 1
+a52 1
+char *getWordAt(int i)
+d54 5
+a58 1
+	return _wordList[i].word;
+d61 1
+a61 1
+int getOccurrenceOfWordAt(int i)
+d63 3
+@
