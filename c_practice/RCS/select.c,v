@@ -1,0 +1,86 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.1
+date	2001.06.01.14.10.10;	author cs991033;	state Exp;
+branches;
+next	;
+
+
+desc
+@guess a number between 0~500
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@/*------------------------------------------------ 
+ * date : 2001.06.01
+ * time spend : 12 minutes
+ * made by ; theand , sj
+ * ------------------------------------------------*/ 
+#include <stdio.h>
+#include <stdlib.h>//rand()
+#include <time.h>
+
+int target;
+int input;
+
+void random_number(void);
+void getInput(void);
+int check(void);
+
+int main(void)
+{
+
+	random_number();
+	do{
+	getInput();
+	} while( check()==0 ) ;//check 가 0 리턴하면 틀렸다.
+						//1을 리턴하면 정답을 맞춘거니까 게임 종료.
+
+	return 0;
+}
+int check(void)
+{
+	int flag;
+
+	if( input == target )
+		printf("You right!\n");
+	else if( input > target )
+		printf(" target is less than %d\n", input);
+	else
+		printf(" target is greater than %d\n", input);
+
+	if( input==target )
+		flag=1;
+	else
+		flag=0;
+	return flag;
+}
+
+void getInput(void)
+{
+	printf("Input numner between 0~500:");
+	scanf("%d", &input);
+	//TO DO : 오류체크 나중에.
+}
+
+void random_number(void)
+{
+	long int r;
+
+	srand(time(NULL));
+
+	r=random();
+
+	target=r%501;
+}
+@

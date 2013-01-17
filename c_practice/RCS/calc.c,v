@@ -1,0 +1,286 @@
+head	1.2;
+access;
+symbols;
+locks
+	cs991033:1.2; strict;
+comment	@ * @;
+
+
+1.2
+date	2002.05.13.02.36.18;	author cs991033;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.05.12.08.47.33;	author cs991033;	state Exp;
+branches;
+next	;
+
+
+desc
+@infix to postfix calc
+@
+
+
+1.2
+log
+@getStackTop()
+pushStack()
+popStack()
+_top
+_stack[]
+flushStackTo()
+등등 추가
+@
+text
+@#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <assert.h>
+
+enum {StackMax =60};
+
+
+char _stack[StackMax];
+int _top = -1;
+
+int i, j;
+
+int pushStack(char symbol);
+char popStack(void);
+int getPrecedence(int symbol);
+void infix2prefix(char *aTarget, char aSrc[]);
+void flushStackTo(char *aTarget );
+int getStackTop(void);
+void putExprTo(char **aTarget);
+
+int main(void)
+{
+
+	char preexpr[StackMax];
+	char inexpr[StackMax];
+
+	printf("수식을 입력하세요 : ");
+	scanf("%s", inexpr);
+	i = strlen(inexpr) - 1;
+
+	infix2prefix(preexpr, inexpr);
+
+	for (j = strlen(preexpr) - 1; j >= 0; j--)
+		printf("%c", preexpr[j]);
+	printf("\n");
+
+	return 0;
+
+}
+int pushStack(char symbol)
+{
+	_top++;
+
+	if (_top > StackMax) {
+		printf("\nStack is full");
+		exit(-1);
+	}
+	_stack[_top] = symbol;
+	return 1;
+
+}
+
+char popStack(void)
+{
+
+	if (_top < 0)
+		return -1;
+
+	return _stack[_top--];
+
+}
+
+int getPrecedence(int symbol)
+{
+
+	switch (symbol) {
+	case ')':
+		return 0;
+	case '+':
+	case '-':
+		return 1;
+	case '*':
+	case '/':
+	case '%':
+		return 2;
+	default:
+		return 3;
+	}
+
+}
+void flushStackTo(char *aTarget )
+{
+	while (_top >= 0) {
+		//putExprTo(&aTarget);
+		*aTarget++ = popStack();
+		*aTarget++ = ' ';
+	}
+	aTarget--;
+	*aTarget = 0;
+
+}
+/*
+void putExprTo(char **aTarget)
+{
+	*aTarget++ = popStack();
+	*aTarget++ = ' ';
+}
+
+ */
+
+void infix2prefix(char *preexpr, char inexpr[])
+{
+
+	while (i >= 0) {
+		if (inexpr[i] == ')') {
+			pushStack(inexpr[i]);
+			i--;
+		} else if (inexpr[i] == '(') {
+			while (getStackTop() != ')') {
+				*preexpr++ = popStack();
+				*preexpr++ = ' ';
+			}
+			popStack();
+			i--;
+		} else if (strchr("+-*/%", inexpr[i]) != 0) {
+			while (_top >= 0
+				   && getPrecedence(getStackTop()) >=
+				   getPrecedence(inexpr[i])) {
+				*preexpr++ = popStack();
+				*preexpr++ = ' ';
+			}
+			pushStack(inexpr[i]);
+			i--;
+		} else if (isalnum(inexpr[i])) {
+			do {
+				*preexpr = inexpr[i];
+				*preexpr++;
+				i--;
+			} while (isalnum(inexpr[i]));
+
+			*preexpr++ = ' ';
+		} else
+			i--;
+	}
+
+	flushStackTo(preexpr);
+
+
+}
+
+int getStackTop(void)
+{
+	assert(_top>=0);
+	assert(_top<StackMax);
+	return _stack[_top]; 
+}
+
+
+////////////////// EOF ////////////////////////
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 1
+a5 1
+#define MAX         60
+d7 5
+a12 2
+char _stack[MAX];
+int top = -1;
+d15 9
+a23 1
+int push(char symbol)
+a24 1
+	top++;
+d26 21
+a46 1
+	if (top > MAX) {
+d50 1
+a50 1
+	_stack[top] = symbol;
+d55 1
+a55 1
+char pop(void)
+d58 1
+a58 1
+	if (top < 0)
+d61 1
+a61 1
+	return _stack[top--];
+d83 9
+d93 11
+a103 1
+void infix2prefix(char *postexpr, char inexpr[])
+d108 1
+a108 1
+			push(inexpr[i]);
+d111 3
+a113 3
+			while (_stack[top] != ')') {
+				*postexpr++ = pop();
+				*postexpr++ = ' ';
+d115 1
+a115 1
+			pop();
+d118 2
+a119 2
+			while (top >= 0
+				   && getPrecedence(_stack[top]) >=
+d121 2
+a122 2
+				*postexpr++ = pop();
+				*postexpr++ = ' ';
+d124 1
+a124 1
+			push(inexpr[i]);
+d128 2
+a129 2
+				*postexpr = inexpr[i];
+				*postexpr++;
+d133 1
+a133 1
+			*postexpr++ = ' ';
+d138 1
+a138 4
+	while (top >= 0) {
+		*postexpr++ = pop();
+		*postexpr++ = ' ';
+	}
+a139 2
+	postexpr--;
+	*postexpr = 0;
+d143 1
+a143 1
+int main(void)
+d145 4
+a149 6
+	char postexpr[MAX];
+	char inexpr[MAX];
+
+	printf("수식을 입력하세요 : ");
+	scanf("%s", inexpr);
+	i = strlen(inexpr) - 1;
+d151 1
+a151 9
+	infix2prefix(postexpr, inexpr);
+
+	for (j = strlen(postexpr) - 1; j >= 0; j--)
+		printf("%c", postexpr[j]);
+	printf("\n");
+
+	return 0;
+
+}
+@

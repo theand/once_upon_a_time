@@ -1,0 +1,354 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2001.11.23.07.33.11;	author cs991033;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.08.13.07.37.32;	author cs991033;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.07.10.16.04.11;	author cs991033;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.06.01.14.09.47;	author cs991033;	state Exp;
+branches;
+next	;
+
+
+desc
+@Numeric Baseball Game
+@
+
+
+1.4
+log
+@string.h
+@
+text
+@/*
+	gcc baseball.c
+	이걸로 컴파일하고 ./a.out 으로 실행.
+
+	gcc -DDEBUG baseball.c 
+	이걸로 컴파일하면 디버그 모드라서 답을 미리 볼수있음.
+	실행은 똑같이.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>//rand()
+#include <time.h>
+#include <string.h>
+#include <assert.h>
+
+//this macro evaluate the number of array elements
+#define num_of(array) (sizeof(array)/sizeof(array[0])) 
+
+enum{diff=0,same=1,true=1,false=0};//compile time constants.
+
+void generateNum(char *rightAns);
+void getNum(char *myAns);
+int compNum(char *rightAns, char *myAns);
+int isCont(void);
+int isCorrect(char *num);
+
+int main(void)
+{
+	char rAns[4];
+	char myAns[4];
+
+	do{
+		generateNum(rAns);
+		do{
+		getNum(myAns);
+		} while( compNum(rAns, myAns)==diff) ;//compare two number.
+	}while( isCont()==true );//to continue or not to coninue
+
+	return 0;
+}
+
+int isCont(void)
+{
+	char c[2];
+	
+	do{
+	fflush(stdin);
+	printf("Do you want to continue game?(y/n)");
+	scanf("%s",c);
+	fflush(stdin);
+	}while( c[0]!='y' && c[0]!='n' );
+	//%c 로 입력을 받아들이면 버퍼드 인풋으로 \n 이 들어갈 위험이 있어서
+	//1개짜리 어레이를 만들고 %s 를 사용하고 비교할때는 [0] 으로 비교하였다.
+
+	if( c[0] == 'y')
+		return true;
+	else
+		return false;
+}
+
+int compNum(char *rightAns, char *myAns)
+{
+	int s=0;//strike counter
+	int b=0;//ball counter
+	int i,j;//loop index
+
+	assert( rightAns!=NULL );
+	assert( myAns!=NULL );
+
+	for( i=0; i<3 ;i++ )
+		for( j=0; j<3 ; j++ )
+			if( rightAns[i] == myAns[j] ){
+				if( i==j )
+					s++;
+				else 
+					b++;
+				break;
+			}//inner for
+
+	if( s!=0 && b ==0 )//no ball
+		printf("%d strikes\n", s);
+	else if( s!=0 && b!=0 )//both strike and ball
+		printf("%d strikes %d balls\n", s,b);
+	else if( s==0 && b!=0 )//no strike
+		printf("%d balls\n", b);
+	else//no count
+		printf("Out!\n");
+
+	if( s==3 ){//if three strikes
+		printf("Congratulations~! You're right!\n");
+		return same;
+	}
+	else
+		return diff;
+}
+
+void getNum(char *myAns)
+{
+	assert(myAns!=NULL);
+
+	do{
+		printf("Input numner : ");
+		scanf("%3s", myAns);
+		fflush(stdin);//flush buffer
+	} while(isCorrect(myAns)==false);
+}
+
+int isCorrect(char *num)
+{
+	int i;
+
+	assert( num!=NULL);
+
+	if( strlen(num)!=3 )
+		return false;
+	for( i=0; i<3; i++){
+		if( num[i]<'0' || num[i]>'9' ){
+			printf("ERROR : input character is not a number."); 
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void generateNum(char *rightAns)
+{
+	int n=0;//generated number( 1~9 )
+	int c=0;//count
+	int table[10];//table[0] 은 dummy space. 
+				  //테이블에 해당 번호가 이미 나왔는지 아닌지 플래그를 둔다.
+				  //1~9 까지만 유효하다.
+	long int r;//
+
+	assert(rightAns!=NULL);
+
+	srand(time(NULL));
+
+	for( c=0; c < num_of(table); c++)
+		table[c]=false;//initialize
+
+	for( c=0; c < 3 ; c++ ){
+		while( 1 ){
+			r = rand();//generate random number
+			n = r%10;//maybe n is 0~9
+
+			if( n==0 || table[n]==true )//0 is not allowed, or duplicated number
+				continue;//re-generate another number
+
+			//now, n is must 1~9 with do duplication.
+			rightAns[c]=n+'0';
+			table[n]=true;//flag set.
+			break;
+
+		}//end of while
+
+		n=0;//table[0] is always 0.
+
+	}//end of for
+
+	rightAns[c]='\0';//c is 3(the last index). mark '\0'. because it is string.
+
+#ifdef DEBUG
+	printf("Right Answer is %s\n", rightAns);
+#endif
+}
+@
+
+
+1.3
+log
+@add : isCorrect() implemented.
+,
+@
+text
+@d13 1
+@
+
+
+1.2
+log
+@change: fix generateNum
+@
+text
+@d18 1
+a18 1
+enum{diff=0,same=1,true=1,false=0};//compile time 상수
+d24 1
+d43 1
+a43 1
+	char c;
+d48 5
+a52 2
+	scanf("%c",&c);
+	}while( c!='y' && c!='n' );
+d54 1
+a54 1
+	if( c == 'y')
+a98 3
+	printf("Input numner :");
+	scanf("%3s", myAns);
+	fflush(stdin);//flush buffer
+d100 23
+a122 1
+	//TODO: isCorrect();
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 9
+a9 5
+/*------------------------------------------------ 
+ * date : 2001.06.01
+ * time spend : 1 hour 30 minutes
+ * made by ; theand , sj
+ * ------------------------------------------------*/ 
+d13 6
+d20 4
+a23 7
+char target[4];
+int input;
+char my[4];
+
+void random_number(void);
+void getInput(void);
+int check(void);
+d27 2
+a29 1
+	random_number();
+d31 5
+a35 3
+	getInput();
+	} while( check()==0 ) ;//check 가 0 리턴하면 틀렸다.
+						//1을 리턴하면 정답을 맞춘거니까 게임 종료.
+d39 18
+a56 1
+int check(void)
+d58 6
+a63 4
+	int s=0;
+	int b=0;
+	int i,j;
+	int flag=0;
+d67 1
+a67 1
+			if( target[i] == my[j] ){
+d72 2
+a73 1
+			}
+d75 1
+a75 1
+	if( s!=0 && b ==0 )
+d77 1
+a77 1
+	else if( s!=0 && b!=0 )
+d79 1
+a79 1
+	else if( s==0 && b!=0 )
+d81 2
+a82 2
+	else
+		printf("out!\n");
+d84 4
+a87 2
+	if( s==3 )
+		flag=1;
+d89 1
+a89 2
+		flag=0;
+	return flag;
+d92 1
+a92 1
+void getInput(void)
+d94 1
+d96 4
+a99 2
+	scanf("%s", my);
+	//TO DO : 오류체크 나중에.
+d102 1
+a102 1
+void random_number(void)
+d104 6
+a109 2
+	int n=0;
+	int c=0;
+d111 1
+a111 1
+	long int r;
+d114 4
+d119 19
+a137 19
+		while( n==0 ){
+			r = rand();
+			n = r%10;
+			if( c==1 )//TO DO : 또 겹칠수도 있도 있다.
+				if( target[0] == n+'0' ){//if duplicated
+					r = rand();
+					n = r%10;
+				}
+			if( c==2 )//TO DO : 또 겹칠수도 있도 있다.
+				if( target[0]==n+'0' || target[1]==n+'0'){//if duplicated
+					r = rand();
+					n = r%10;
+				}
+
+		}
+		target[c]=n+'0';
+		n=0;
+	}
+	target[c]='\0';//c is 3
+d139 3
+@
