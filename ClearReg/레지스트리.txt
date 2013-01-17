@@ -1,0 +1,14 @@
+\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Internet Explorer\Main
+ Start Page : "about:blank"
+
+리얼플레이어
+ MostRecent 랑 같은 레벨에서 NumMostRecentClips 키에서 기본값에 MostRecentClip 의 갯수를 지정할 수 있다.
+
+
+\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+ Recent : "c:\windows\recent"
+  저 폴더에 있는 파일모두 지우기. 최근문서.
+ History : "c:\windows\history"
+  \history.ie5
+  여기 있는 파일도 그냥 지우면 될까?
+   
