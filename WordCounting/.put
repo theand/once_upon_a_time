@@ -1,0 +1,5 @@
+#!/bin/bash
+for i in main.c myutil.c myutil.h wc.c wc.h array.c array.h list.c list.h  inst.c inst.h
+	do
+	ci $i
+done
